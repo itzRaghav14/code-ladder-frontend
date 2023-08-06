@@ -2,7 +2,11 @@ import axios from "axios";
 
 const fetchProblemsService = async ({ startRating, endRating, tags }) => {
 
+  if (!startRating) startRating = 800;
+  if (!endRating) endRating = 3500;
   if (tags === undefined) tags = [];
+
+  console.log(startRating, endRating);
 
   const url = `https://codeforces.com/api/problemset.problems?tags=${tags.join(';')}`;
   const res = await axios.get(url);
@@ -67,7 +71,7 @@ const fetchProblemsService = async ({ startRating, endRating, tags }) => {
 const fetchSolvedProblemsService = async ({ username }) => {
 
   const problemStatus = new Map();
-
+  
   if(!username) {
     return {
       status: 'FAILED',
@@ -76,11 +80,20 @@ const fetchSolvedProblemsService = async ({ username }) => {
     }
   }
 
-  const url = `https://codeforces.com/api/user.status?handle=${username}`;
-  const res = await axios.get(url);
-  console.log(res);
+  try {
 
-  if (res.data.status !== 'OK') {
+    const url = `https://codeforces.com/api/user.status?handle=${username}`;
+    const res = await axios.get(url);
+    console.log(res);
+
+    for (let status of res.data.result) {
+      let problemName = status.problem.name;
+      if (problemStatus.has(problemName) && problemStatus.get(problemName) === 'OK') continue;
+      problemStatus.set(problemName, status.verdict);
+    }
+
+    console.log(problemStatus);
+
     return {
       status: res.data.status,
       comment: res.data.comment,
@@ -88,18 +101,13 @@ const fetchSolvedProblemsService = async ({ username }) => {
     }
   }
 
-
-  for (let status of res.data.result) {
-    let problemName = status.problem.name;
-    if(problemStatus.has(problemName) && problemStatus.get(problemName) === 'OK') continue;
-    problemStatus.set(problemName, status.verdict);
+  catch (err) {
+    console.log(err.message);
   }
 
-  console.log(problemStatus);
-
   return {
-    status: res.data.status,
-    comment: res.data.comment,
+    status: 'FAILED',
+    comment: 'Username not valid',
     data: problemStatus
   }
 

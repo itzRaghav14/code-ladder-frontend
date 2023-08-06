@@ -29,15 +29,14 @@ const ProblemSet = () => {
     };
 
     const fetchSolvedProblems = async () => {
-      const res = await fetchSolvedProblemsService({ username: "itzzRaghav" });
+      const res = await fetchSolvedProblemsService({ username });
       setProblemStatus(res.data);
       console.log({ solvedProblems: res.data });
-
     };
 
     fetchProblemset();
     fetchSolvedProblems();
-  }, [startRating, endRating]);
+  }, [username, startRating, endRating]);
 
   const findVerdict = (problem) => {
     if(!problemStatus || !problemStatus.has(problem.name)) return 'UNSOLVED';

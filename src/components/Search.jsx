@@ -10,9 +10,11 @@ const Search = () => {
   const usernameRef = useRef(null);
 
   const changeRange = () => {
+    const username = usernameRef.current.value;
     const startRating = startRatingRef.current.value;
     const endRating = endRatingRef.current.value;
     if (startRating === undefined || endRating === undefined) return;
+    dispatch(setUsername({username}));
     dispatch(setRatingRange({ startRating, endRating }));
   };
 
@@ -20,9 +22,15 @@ const Search = () => {
     <div className="">
       <div className="flex items-center justify-center gap-6">
         <input
+          type="text"
+          ref={usernameRef}
+          placeholder="Enter username..."
+          className="px-2 py-1 bg-white border border-gray-500 rounded-md"
+        />
+        <input
           type="number"
           ref={startRatingRef}
-          placeholder="Min. Rating"
+          placeholder="Min. Rating..."
           className="px-2 py-1 bg-white border border-gray-500 rounded-md"
         />
         <input
