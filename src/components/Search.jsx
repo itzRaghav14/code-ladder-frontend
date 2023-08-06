@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setRatingRange } from "../store/searchSlice";
+import { setUsername } from "../store/usernameSlice";
 
 const Search = () => {
   const dispatch = useDispatch();
   const startRatingRef = useRef(null);
   const endRatingRef = useRef(null);
+  const usernameRef = useRef(null);
 
   const changeRange = () => {
     const startRating = startRatingRef.current.value;
@@ -31,7 +33,7 @@ const Search = () => {
         />
         <button
           onClick={changeRange}
-          className="px-2 py-1 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white duration-700 ease-in-out"
+          className="px-2 py-1 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white duration-300 ease-in-out"
         >
           Search
         </button>

@@ -52,7 +52,7 @@ const ProblemSet = () => {
         <div className="col-span-5 text-center">Problem</div>
         <div className="col-span-2 text-center">Frequency</div>
         <div className="col-span-2 text-center">Rating</div>
-        <div className="col-span-2 text-center">Difficulty</div>
+        <div className="col-span-2 text-center">Verdict</div>
       </div>
 
       {loading === false &&
