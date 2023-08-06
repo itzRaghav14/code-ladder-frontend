@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProblemCard = ({ id, name, solvedCount, rating, contestId, index }) => {
+const ProblemCard = ({ id, name, solvedCount, rating, contestId, index, verdict }) => {
   const difficulty =
     rating <= 1200
       ? "Easy"
@@ -12,13 +12,16 @@ const ProblemCard = ({ id, name, solvedCount, rating, contestId, index }) => {
 
   const link = `https://codeforces.com/problemset/problem/${contestId}/${index}`
 
+  if(verdict === 'OK') verdict = 'AC';
+  const bgColor = verdict === 'AC' ? 'bg-green-500' : verdict !== 'UNSOLVED' ? 'bg-red-500' : '';
+
   return (
-    <a href={link} className="grid grid-cols-12 p-2 hover:bg-gray-200 duration-150">
+    <a href={link} className={`relative grid grid-cols-12 p-2 ${bgColor} before:absolute before:w-full before:h-full before:opacity-20 hover:before:bg-black duration-150`}>
       <div className="col-span-1 text-center">{contestId + index}</div>
       <div className="col-span-5 text-center">{name}</div>
       <div className="col-span-2 text-center">{solvedCount}</div>
       <div className="col-span-2 text-center">{rating}</div>
-      <div className="col-span-2 text-center">{difficulty}</div>
+      <div className="col-span-2 text-center">{verdict}</div>
     </a>
   );
 };
